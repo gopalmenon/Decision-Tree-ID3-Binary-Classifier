@@ -14,7 +14,7 @@ public class RunClassifier {
 	public static void main(String[] args) {
 
 		try {
-			Set<List<Character>> data = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
+			List<List<Character>> data = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
 			System.out.println(data);
 		} catch (IOException e) {
 			System.err.println("Error reading file " + TRAINING_DATA_A_FILE);

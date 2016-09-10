@@ -3,9 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class CsvFileReader {
@@ -17,9 +15,9 @@ public class CsvFileReader {
 	 * @return a set of lists. Each list will have comma separated character variables.
 	 * @throws FileNotFoundException
 	 */
-	public static Set<List<Character>> getCsvFileContents(String filePath) throws IOException {
+	public static List<List<Character>> getCsvFileContents(String filePath) throws IOException {
 		
-		Set<List<Character>> csvFileContents = new HashSet<List<Character>>();
+		List<List<Character>> csvFileContents = new ArrayList<List<Character>>();
 		BufferedReader bufferedReader = null;
 		try {
 			bufferedReader = new BufferedReader(new FileReader(filePath));

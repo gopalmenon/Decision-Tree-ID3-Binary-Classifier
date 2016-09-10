@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		assert trainingData.size() > 0 && !isDuplicatesInTrainingData(trainingData);
 		
 		doBookKeeping(trainingData);
+		
+		buildDecisionTree(trainingData);
 
 	}
 
@@ -190,5 +193,32 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 			return secondLabelCount;
 		}
 	}
+
+	/**
+	 * Build a decision tree to classify the training data based on the ID3 algorithm 
+	 * @param trainingData
+	 */
+	private void buildDecisionTree(List<List<Character>> trainingData) {
+		
+	}
+	
+	/**
+	 * @param trainingData
+	 * @param featureToPartitionOn
+	 * @param featureValue
+	 * @return a subset of the training data containing only those records with mqtching feature values
+	 */
+	private List<List<Character>> getTrainingDataSubset(List<List<Character>> trainingData, int featureToPartitionOn, char featureValue) {
+				
+		List<List<Character>> trainingDataSubset = new ArrayList<List<Character>>();
+		for (List<Character> trainingDataRecord : trainingData) {
+			if (trainingDataRecord.get(featureToPartitionOn).charValue() == featureValue) {
+				trainingDataSubset.add(new ArrayList<Character>(trainingDataRecord));
+			}
+		}
+		return trainingDataSubset;
+		
+	}
+	
 	
 }
