@@ -3,7 +3,8 @@ public class DecisionTreeLeafNode extends DecisionTreeNode {
 
 	private char label;
 	
-	public DecisionTreeLeafNode(char label) {
+	public DecisionTreeLeafNode(char previousAttributeValue, char label) {
+		super(previousAttributeValue);
 		this.label = label;
 	}
 

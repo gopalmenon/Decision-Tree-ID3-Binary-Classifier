@@ -1,5 +1,4 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,6 +25,9 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	private boolean secondLabelFound;
 	private Random randomNumberGenerator;
 
+	/* (non-Javadoc)
+	 * @see Classifier#train(java.util.List)
+	 */
 	@Override
 	public void train(List<List<Character>> trainingData) {
 		
@@ -34,14 +36,57 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		
 		doBookKeeping(trainingData);
 		
-		this.decisionTreeRootNode = buildDecisionTree(trainingData, getAttributesVector());
+		this.decisionTreeRootNode = buildDecisionTree(trainingData, getAttributesVector(), ' ');
 
 	}
 
+	/* (non-Javadoc)
+	 * @see Classifier#predict(java.util.List)
+	 */
 	@Override
-	public List<Character> predict(List<Character> testData) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Character> predict(List<List<Character>> testData) {
+
+		List<Character> prediction = new ArrayList<Character>();
+		for (List<Character> testDataRecord : testData) {
+			prediction.add(Character.valueOf(getPrediction(testDataRecord)));
+		}
+		
+		return prediction;
+	}
+	
+	/**
+	 * @param testDataRecord
+	 * @return the prediction based on the decision tree constructed during the training phase
+	 */
+	private char getPrediction(List<Character> testDataRecord) {
+		
+		DecisionTreeNode decisionTreeNode = this.decisionTreeRootNode;
+		int attributeSplitOn = 0;
+		char attribute = ' ';
+		outerLoop:
+		while (decisionTreeNode instanceof DecisionTreeInternalNode) {
+			
+			attributeSplitOn = ((DecisionTreeInternalNode) decisionTreeNode).getAttributeSplitOn();
+			attribute = testDataRecord.get(attributeSplitOn);
+			
+			for (DecisionTreeNode decisionTreeChildNode : ((DecisionTreeInternalNode) decisionTreeNode).getChildNodes()) {
+				if (decisionTreeChildNode instanceof DecisionTreeInternalNode) {
+					if (decisionTreeChildNode.getPreviousAttributeValue() == attribute) {
+						decisionTreeNode = decisionTreeChildNode;
+						break;
+					}
+				} else {
+					if (decisionTreeChildNode.getPreviousAttributeValue() == attribute) {
+						break outerLoop;
+					}
+				}
+			}
+			
+			
+		}
+		
+		return ((DecisionTreeLeafNode) decisionTreeNode).getLabel();
+		
 	}
 	
 	/**
@@ -208,17 +253,17 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 * @param attributesVector
 	 * @return a root node for the tree (subtree for the recursive case)
 	 */
-	private DecisionTreeNode buildDecisionTree(List<List<Character>> examples, Set<Integer> attributesVector) {
+	private DecisionTreeNode buildDecisionTree(List<List<Character>> examples, Set<Integer> attributesVector, char previousAttributeValue) {
 		
 		//If all examples have the same label, return a leaf node marked with the common label 
 		AllExamples allExamples = isAllExamplesTheSame(examples);
 		if (allExamples.isAllExamplesSame()) {
-			return new DecisionTreeLeafNode(allExamples.getAllExamplesLabel());
+			return new DecisionTreeLeafNode(previousAttributeValue, allExamples.getAllExamplesLabel());
 		}
 		
 		//If there are no attributes left, return a leaf node with most common target label
 		if (attributesVector.size() == 0) {
-			return new DecisionTreeLeafNode(getMostCommonTargetAttribute(examples));
+			return new DecisionTreeLeafNode(previousAttributeValue, getMostCommonTargetAttribute(examples));
 		}
 		
 		int bestAttribute = getBestClassifyingAttribute(examples, attributesVector);
@@ -232,16 +277,16 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		
 			List<List<Character>> trainingDataSubset = getTrainingDataSubset(examples, bestAttribute, attributeValue.charValue());
 			if (trainingDataSubset.size() == 0) {
-		
-		
+				childNodes.add(new DecisionTreeLeafNode(attributeValue.charValue(), getMostCommonTargetAttribute(examples)));
 			} else {
-		
-				
+				Set<Integer> reducedAttributesVector = new HashSet<Integer>(attributesVector);
+				reducedAttributesVector.remove(Integer.valueOf(bestAttribute));
+				childNodes.add(buildDecisionTree(trainingDataSubset, reducedAttributesVector, attributeValue));
 			}
 			
 		}
 		
-		return new DecisionTreeInternalNode(bestAttribute, childNodes);
+		return new DecisionTreeInternalNode(previousAttributeValue, bestAttribute, childNodes);
 		
 	}
 	
@@ -380,7 +425,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 */
 	private char getMostCommonTargetAttribute(List<List<Character>> trainingData) {
 		
-		//Count the number of occurences for the labels
+		//Count the number of occurrences for the labels
 		int firstLabelCount = 0, secondLabelCount = 0;
 		for (List<Character> trainingRecord : trainingData) {
 			if (trainingRecord.get(this.labelOffset).charValue() == this.firstLabel) {
