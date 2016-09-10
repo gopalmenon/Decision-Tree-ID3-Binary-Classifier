@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CsvFileReader {
 	
-	public static final String FEATURE_SEPARATOR = ",";;
+	public static final String FEATURE_SEPARATOR = ",";
 	
 	/**
 	 * @param filePath

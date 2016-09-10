@@ -1,5 +1,5 @@
 
-public class DecisionTreeLeafNode {
+public class DecisionTreeLeafNode extends DecisionTreeNode {
 
 	private char label;
 	
