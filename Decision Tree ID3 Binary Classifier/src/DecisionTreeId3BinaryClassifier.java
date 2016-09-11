@@ -16,15 +16,18 @@ import java.util.Set;
  */
 public class DecisionTreeId3BinaryClassifier implements Classifier {
 	
-	public static final String FEATURES_PROPERTIES_FILE = "PokemonGo.properties";
 	public static final String ATTRIBUTE_VALUE_SEPARATOR = ",";
 	
+	private String propertiesFileName;
 	private DecisionTreeNode decisionTreeRootNode;
 	private int labelOffset;
 	private char firstLabel, secondLabel;
 	private boolean secondLabelFound;
 	private Random randomNumberGenerator;
 
+	public DecisionTreeId3BinaryClassifier(String propertiesFileName) {
+		this.propertiesFileName = propertiesFileName;
+	}
 	/* (non-Javadoc)
 	 * @see Classifier#train(java.util.List)
 	 */
@@ -337,7 +340,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		try {
 		
 			//Load attribute values from properties file
-			InputStream inputStream = new FileInputStream(FEATURES_PROPERTIES_FILE);
+			InputStream inputStream = new FileInputStream(this.propertiesFileName);
 			featureProperties.load(inputStream);
 			
 			String featureName = featureProperties.getProperty(Integer.valueOf(attribute).toString());
