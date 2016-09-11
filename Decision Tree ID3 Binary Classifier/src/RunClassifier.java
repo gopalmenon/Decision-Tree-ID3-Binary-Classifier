@@ -1,7 +1,5 @@
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-
 
 public class RunClassifier {
 
@@ -9,15 +7,35 @@ public class RunClassifier {
 	 * @param args
 	 */
 	
-	public static final String TRAINING_DATA_A_FILE = "datasets/SettingA/test.data";
+	//public static final String TRAINING_DATA_A_FILE = "datasets/SettingA/test.data";
+	public static final String TRAINING_DATA_FILE = "datasets/PokemonGo/Train.data";
+	public static final String TESTING_DATA_FILE = "datasets/PokemonGo/test.data";
 	
 	public static void main(String[] args) {
 
 		try {
-			List<List<Character>> data = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
-			System.out.println(data);
+
+			//Get training and testing data
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_FILE);
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_FILE);
+			
+			//Train the classifier
+			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier();
+			classifier.train(trainingData);
+			
+			//Run the prediction
+			List<Character> prediction = classifier.predict(testingData);
+			
+			//Find prediction accuracy
+			ClassifierMetrics classifierMetrics = new ClassifierMetrics(testingData, prediction, 'y', 'n');
+			System.out.println("Precision: " + classifierMetrics.getPrecision());
+			System.out.println("Recall: " + classifierMetrics.getRecall());
+			System.out.println("Accuracy: " + classifierMetrics.getAccuracy());
+			System.out.println("F1 Score: " + classifierMetrics.getF1Score());
+			
+			
 		} catch (IOException e) {
-			System.err.println("Error reading file " + TRAINING_DATA_A_FILE);
+			System.err.println("Error reading file.");
 			e.printStackTrace();
 		}
 		
