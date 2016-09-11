@@ -25,11 +25,14 @@ public class RunClassifier {
 
 			//Get training and testing data
 			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE);
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
 			
 			//Train the classifier
 			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE);
 			classifier.train(trainingData);
+
+			//Report on the tree depth
+			System.out.println("Maximum tree depth: " + classifier.getMaximumTreeDepth());
 			
 			//Run the prediction
 			List<Character> prediction = classifier.predict(testingData);
@@ -38,9 +41,6 @@ public class RunClassifier {
 			Properties featureProperties = new Properties();
 			InputStream inputStream = new FileInputStream(MUSHROOM_FEATURES_PROPERTIES_FILE);
 			featureProperties.load(inputStream);
-
-			
-			
 			
 			//Find prediction accuracy
 			ClassifierMetrics classifierMetrics = new ClassifierMetrics(testingData, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));

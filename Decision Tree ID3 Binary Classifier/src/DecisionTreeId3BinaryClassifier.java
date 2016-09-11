@@ -24,6 +24,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	private char firstLabel, secondLabel;
 	private boolean secondLabelFound;
 	private Random randomNumberGenerator;
+	private int maximumTreeDepth;
 
 	public DecisionTreeId3BinaryClassifier(String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
@@ -39,7 +40,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		
 		doBookKeeping(trainingData);
 		
-		this.decisionTreeRootNode = buildDecisionTree(trainingData, getAttributesVector(), ' ');
+		this.decisionTreeRootNode = buildDecisionTree(trainingData, getAttributesVector(), ' ', this.maximumTreeDepth);
 
 	}
 
@@ -117,6 +118,8 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		this.labelOffset = trainingData.get(0).size() - 1;
 		this.firstLabel = trainingData.get(0).get(labelOffset);
 		this.randomNumberGenerator = new Random(System.currentTimeMillis());
+		this.maximumTreeDepth = 0;
+		
 	}
 	
 	/**
@@ -268,7 +271,12 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 * @param attributesVector
 	 * @return a root node for the tree (subtree for the recursive case)
 	 */
-	private DecisionTreeNode buildDecisionTree(List<List<Character>> examples, Set<Integer> attributesVector, char previousAttributeValue) {
+	private DecisionTreeNode buildDecisionTree(List<List<Character>> examples, Set<Integer> attributesVector, char previousAttributeValue, int currentDepth) {
+		
+		//Keep track of tree depth
+		if (currentDepth > this.maximumTreeDepth) {
+			this.maximumTreeDepth = currentDepth;
+		}
 		
 		//If all examples have the same label, return a leaf node marked with the common label 
 		AllExamples allExamples = isAllExamplesTheSame(examples);
@@ -296,7 +304,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 			} else {
 				Set<Integer> reducedAttributesVector = new HashSet<Integer>(attributesVector);
 				reducedAttributesVector.remove(Integer.valueOf(bestAttribute));
-				childNodes.add(buildDecisionTree(trainingDataSubset, reducedAttributesVector, attributeValue));
+				childNodes.add(buildDecisionTree(trainingDataSubset, reducedAttributesVector, attributeValue, currentDepth + 1));
 			}
 			
 		}
@@ -479,6 +487,13 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 			return Math.log(number) / Math.log(2);
 		}
 		
+	}
+	
+	/**
+	 * @return the maximum tree depth reached while building the decision tree
+	 */
+	public int getMaximumTreeDepth() {
+		return maximumTreeDepth;
 	}
 	
 }
