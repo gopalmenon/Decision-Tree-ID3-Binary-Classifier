@@ -27,7 +27,7 @@ public class CsvFileReader {
 	 * @return a set of lists. Each list will have comma separated character variables.
 	 * @throws FileNotFoundException
 	 */
-	public static List<List<Character>> getCsvFileContents(String filePath, int missingFeatureProcessing) throws IOException {
+	public static DataContainer getCsvFileContents(String filePath, int missingFeatureProcessing) throws IOException {
 		
 		List<List<Character>> csvFileContents = new ArrayList<List<Character>>();
 		BufferedReader bufferedReader = null;
@@ -70,12 +70,15 @@ public class CsvFileReader {
 			throw e;
 		}
 
+		DataContainer dataContainer = null;
 		if (missingFeatureProcessing == SET_MISSING_FEATURE_TO_MAJORITY_FEATURE_VALUE || 
 			missingFeatureProcessing == SET_MISSING_FEATURE_TO_MAJORITY_LABEL_VALUE) {
-			return getCleanedUpFeatures(csvFileContents, missingFeatureProcessing, missingFeatureVector);
+			dataContainer = new DataContainer(getCleanedUpFeatures(csvFileContents, missingFeatureProcessing, missingFeatureVector), missingFeatureVector);
 		} else {
-			return csvFileContents;
+			dataContainer = new DataContainer(csvFileContents, missingFeatureVector);
 		}
+		
+		return dataContainer;
 		
 	}
 	

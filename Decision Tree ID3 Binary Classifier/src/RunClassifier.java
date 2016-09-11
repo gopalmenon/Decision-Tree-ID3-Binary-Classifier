@@ -71,11 +71,11 @@ public class RunClassifier {
 		try {
 
 			//Get training and testing data
-			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 			
 			//Train the classifier
-			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE);
+			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE, false, null);
 			classifier.train(trainingData);
 
 			//Report on the tree depth
@@ -114,8 +114,8 @@ public class RunClassifier {
 		try{
 		
 			//Get training and testing data
-			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 			runCrossValidation(TRAINING_DATA_A_SPLITS, trainingData, testingData);
 		
 		} catch (IOException e) {
@@ -136,8 +136,8 @@ public class RunClassifier {
 		try{
 		
 			//Get training and testing data
-			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 			runCrossValidation(TRAINING_DATA_B_SPLITS, trainingData, testingData);
 		
 		} catch (IOException e) {
@@ -172,7 +172,7 @@ public class RunClassifier {
 		System.out.println("\nBest depth setting: " + bestDepthSetting);
 	
 		//Train the classifier
-		DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, bestDepthSetting);
+		DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, bestDepthSetting, false, null);
 		classifier.train(trainingData);
 
 		//Report on the tree depth
@@ -221,18 +221,18 @@ public class RunClassifier {
 			//Vary the file used as test data. Use the rest as training data.
 			for (int testDataCounter = 0; testDataCounter < datafiles.length; ++testDataCounter) {
 				
-				testingData = CsvFileReader.getCsvFileContents(datafiles[testDataCounter], CsvFileReader.IGNORE_MISSING_FEATURE);
+				testingData = CsvFileReader.getCsvFileContents(datafiles[testDataCounter], CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 				for (int trainingDataCounter = 0; trainingDataCounter < datafiles.length; ++trainingDataCounter) {
 					
 					if (trainingDataCounter != testDataCounter) {
-						tempData = CsvFileReader.getCsvFileContents(datafiles[trainingDataCounter], CsvFileReader.IGNORE_MISSING_FEATURE);
+						tempData = CsvFileReader.getCsvFileContents(datafiles[trainingDataCounter], CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 						trainingData = mergeData(trainingData, tempData);
 					}
 					
 				}
 				
 				//Train the classifier
-				DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, maximumDepth);
+				DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, maximumDepth, false, null);
 				classifier.train(trainingData);
 				
 				//Run the prediction
@@ -308,13 +308,13 @@ public class RunClassifier {
 		try {
 
 			//Get training and testing data
-			List<List<Character>> trainingDataB = CsvFileReader.getCsvFileContents(TRAINING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> testingDataB = CsvFileReader.getCsvFileContents(TESTING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> trainingDataA = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
-			List<List<Character>> testingDataA = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE);
+			List<List<Character>> trainingDataB = CsvFileReader.getCsvFileContents(TRAINING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> testingDataB = CsvFileReader.getCsvFileContents(TESTING_DATA_B_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> trainingDataA = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
+			List<List<Character>> testingDataA = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE, CsvFileReader.IGNORE_MISSING_FEATURE).getData();
 			
 			//Train the classifier
-			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE);
+			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE, false, null);
 			classifier.train(trainingDataB);
 
 			//Report on the tree depth
@@ -375,27 +375,27 @@ public class RunClassifier {
 		
 			//Get training and testing data
 			System.out.println("\nSetting C - Method 1");
-			List<List<Character>> trainingData1 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_FEATURE_VALUE);
-			List<List<Character>> testingData1 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_FEATURE_VALUE);
+			List<List<Character>> trainingData1 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_FEATURE_VALUE).getData();
+			List<List<Character>> testingData1 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_FEATURE_VALUE).getData();
 			double method1Accuracy = runCrossValidation(TRAINING_DATA_C_SPLITS, trainingData1, testingData1);
 			System.out.println("Method 1 accuracy is " + method1Accuracy);
 			
 			//Get training and testing data
 			System.out.println("\nSetting C - Method 2");
-			List<List<Character>> trainingData2 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_LABEL_VALUE);
-			List<List<Character>> testingData2 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_LABEL_VALUE);
+			List<List<Character>> trainingData2 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_LABEL_VALUE).getData();
+			List<List<Character>> testingData2 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_TO_MAJORITY_LABEL_VALUE).getData();
 			double method2Accuracy = runCrossValidation(TRAINING_DATA_C_SPLITS, trainingData2, testingData2);
 			System.out.println("Method 2 accuracy is " + method2Accuracy);
 			
 			//Get training and testing data
 			System.out.println("\nSetting C - Method 3");
-			List<List<Character>> trainingData3 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_AS_SPECIAL_FEATURE);
-			List<List<Character>> testingData3 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_AS_SPECIAL_FEATURE);
+			List<List<Character>> trainingData3 = CsvFileReader.getCsvFileContents(TRAINING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_AS_SPECIAL_FEATURE).getData();
+			List<List<Character>> testingData3 = CsvFileReader.getCsvFileContents(TESTING_DATA_C_FILE, CsvFileReader.SET_MISSING_FEATURE_AS_SPECIAL_FEATURE).getData();
 			double method3Accuracy = runCrossValidation(TRAINING_DATA_C_SPLITS, trainingData3, testingData3);
 			System.out.println("Method 3 accuracy is " + method3Accuracy);
 			
 			//Create the classifier
-			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE);
+			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE, Integer.MAX_VALUE, false, null);
 			double maximumAccuracy = Math.max(Math.max(method1Accuracy, method2Accuracy), method3Accuracy);
 
 			//Get positive and negative labels from properties file

@@ -26,10 +26,14 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	private Random randomNumberGenerator;
 	private int maximumTreeDepth;
 	private int limitingTreeDepth;
+	private boolean missingFeaturesPresent;
+	private List<Boolean> missingFeatureVector;
 
-	public DecisionTreeId3BinaryClassifier(String propertiesFileName, int limitingTreeDepth) {
+	public DecisionTreeId3BinaryClassifier(String propertiesFileName, int limitingTreeDepth, boolean missingFeaturesPresent, List<Boolean> missingFeatureVector) {
 		this.propertiesFileName = propertiesFileName;
 		this.limitingTreeDepth = limitingTreeDepth;
+		this.missingFeaturesPresent = missingFeaturesPresent;
+		this.missingFeatureVector = missingFeatureVector;
 	}
 	
 	/* (non-Javadoc)
@@ -302,6 +306,13 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 		//Create child nodes for each possible value of the attribute to split on
 		List<DecisionTreeNode> childNodes = new ArrayList<DecisionTreeNode>();
 		Set<Character> allPossibleAttributeValues = getAllPossibleAttributeValues(bestAttribute);
+		
+		//If the feature is one that can have a ? as a value then use ? as one of the possible attributes
+		if (this.missingFeaturesPresent) {
+			if (this.missingFeatureVector.get(bestAttribute).booleanValue()) {
+				allPossibleAttributeValues.add(Character.valueOf(CsvFileReader.MISSING_FEATURE));
+			}
+		}
 		
 		//For each possible attribute create a new sub tree
 		for (Character attributeValue : allPossibleAttributeValues) {
