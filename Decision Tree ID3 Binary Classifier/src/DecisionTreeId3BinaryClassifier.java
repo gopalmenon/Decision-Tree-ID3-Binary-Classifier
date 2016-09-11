@@ -25,10 +25,13 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	private boolean secondLabelFound;
 	private Random randomNumberGenerator;
 	private int maximumTreeDepth;
+	private int limitingTreeDepth;
 
-	public DecisionTreeId3BinaryClassifier(String propertiesFileName) {
+	public DecisionTreeId3BinaryClassifier(String propertiesFileName, int limitingTreeDepth) {
 		this.propertiesFileName = propertiesFileName;
+		this.limitingTreeDepth = limitingTreeDepth;
 	}
+	
 	/* (non-Javadoc)
 	 * @see Classifier#train(java.util.List)
 	 */
@@ -273,9 +276,14 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 */
 	private DecisionTreeNode buildDecisionTree(List<List<Character>> examples, Set<Integer> attributesVector, char previousAttributeValue, int currentDepth) {
 		
-		//Keep track of tree depth
+		//Keep track of maximum tree depth
 		if (currentDepth > this.maximumTreeDepth) {
 			this.maximumTreeDepth = currentDepth;
+		}
+		
+		//Check if limiting tree depth has been reached. If so return a leaf node with most common label
+		if (currentDepth == this.limitingTreeDepth) {
+			return new DecisionTreeLeafNode(previousAttributeValue, getMostCommonTargetAttribute(examples));
 		}
 		
 		//If all examples have the same label, return a leaf node marked with the common label 
