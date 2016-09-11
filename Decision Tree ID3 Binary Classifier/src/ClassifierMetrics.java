@@ -3,10 +3,10 @@ import java.util.List;
 
 public class ClassifierMetrics {
 
-	private float precision;
-	private float recall;
-	private float accuracy;
-	private float f1Score;
+	private double precision;
+	private double recall;
+	private double accuracy;
+	private double f1Score;
 	
 	public ClassifierMetrics(List<List<Character>> testData, List<Character> prediction, char positiveLabel, char negativeLabel) {
 		
@@ -43,26 +43,26 @@ public class ClassifierMetrics {
 			}
 		}
 		
-		this.precision = truePositives /(truePositives + falsePositives);
-		this.recall = truePositives /(truePositives + falseNegatives);
-		this.accuracy = (truePositives + trueNegatives) / numberOfTestDataRecords;
-		this.f1Score = (2 * truePositives) / (2 * truePositives + falsePositives + falseNegatives);
+		this.precision = (double) truePositives /(truePositives + falsePositives);
+		this.recall = (double) truePositives /(truePositives + falseNegatives);
+		this.accuracy = (double) (truePositives + trueNegatives) / numberOfTestDataRecords;
+		this.f1Score = (double) (2 * truePositives) / (2 * truePositives + falsePositives + falseNegatives);
 
 	}
 
-	public float getPrecision() {
+	public double getPrecision() {
 		return precision;
 	}
 
-	public float getRecall() {
+	public double getRecall() {
 		return recall;
 	}
 
-	public float getAccuracy() {
+	public double getAccuracy() {
 		return accuracy;
 	}
 
-	public float getF1Score() {
+	public double getF1Score() {
 		return f1Score;
 	}
 	

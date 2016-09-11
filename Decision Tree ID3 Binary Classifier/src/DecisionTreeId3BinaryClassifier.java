@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class DecisionTreeId3BinaryClassifier implements Classifier {
 	
-	public static final String FEATURES_PROPERTIES_FILE = "mushroomFeatures.properties";
+	public static final String FEATURES_PROPERTIES_FILE = "PokemonGo.properties";
 	public static final String ATTRIBUTE_VALUE_SEPARATOR = ",";
 	
 	private DecisionTreeNode decisionTreeRootNode;
@@ -77,6 +77,7 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 					}
 				} else {
 					if (decisionTreeChildNode.getPreviousAttributeValue() == attribute) {
+						decisionTreeNode = decisionTreeChildNode;
 						break outerLoop;
 					}
 				}
@@ -142,9 +143,9 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 			
 		}
 
-		int totalCount = firstLabelCount + secondLabelCount;
+		double totalCount = firstLabelCount + secondLabelCount;
 		double firstLabelFraction = firstLabelCount/totalCount, secondLabelFraction = secondLabelCount/totalCount;
-		return -1 * firstLabelFraction * Math.log(firstLabelFraction) / Math.log(2) - secondLabelFraction * Math.log(secondLabelFraction) / Math.log(2);
+		return -1 * firstLabelFraction * logBase2(firstLabelFraction) - secondLabelFraction * logBase2(secondLabelFraction);
 
 	}
 
@@ -198,10 +199,21 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 */
 	private double getWeightedFeatureValuesEntropy(Map<Character, FeatureValueCounts> counts) {
 		
-		double weightedFeatureValuesEntropy = 0.0;
+		Map<Character, Integer> featureCounts = new HashMap<Character, Integer>();
+		int featureCount = 0, totalFeatureCount = 0;
 		Set<Character> FeatureValueKeys = counts.keySet();
+		
+		//Find fraction values for features
 		for (Character featureValue : FeatureValueKeys) {
-			weightedFeatureValuesEntropy += getWeightedSubsetEntropy(counts.get(featureValue).getFirstLabelCount(), counts.get(featureValue).getSecondLabelCount());
+			featureCount = counts.get(featureValue).getFirstLabelCount() + counts.get(featureValue).getSecondLabelCount();
+			totalFeatureCount += featureCount;
+			featureCounts.put(featureValue, Integer.valueOf(featureCount));
+		}
+		
+		double weightedFeatureValuesEntropy = 0.0;
+		for (Character featureValue : FeatureValueKeys) {
+			weightedFeatureValuesEntropy += ((double) featureCounts.get(featureValue).intValue()/totalFeatureCount) * 
+											getWeightedSubsetEntropy(counts.get(featureValue).getFirstLabelCount(), counts.get(featureValue).getSecondLabelCount());
 		}
 		
 		return weightedFeatureValuesEntropy;
@@ -215,10 +227,10 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	 */
 	private double getWeightedSubsetEntropy(int firstLabelCount, int secondLabelCount) {
 		
-		double firstLabelFraction = firstLabelCount / (firstLabelCount + secondLabelCount);
-		double secondLabelFraction = secondLabelCount / (firstLabelCount + secondLabelCount);
+		double firstLabelFraction = (double) firstLabelCount / (firstLabelCount + secondLabelCount);
+		double secondLabelFraction = (double) secondLabelCount / (firstLabelCount + secondLabelCount);
 		
-		return -1 * firstLabelFraction * (Math.log(firstLabelFraction) / Math.log(2)) - secondLabelFraction * (Math.log(secondLabelFraction) / Math.log(2));
+		return -1 * firstLabelFraction * logBase2(firstLabelFraction) - secondLabelFraction * logBase2(secondLabelFraction);
 		
 	}
 	
@@ -299,10 +311,12 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 	private int getBestClassifyingAttribute(List<List<Character>> examples, Set<Integer> attributesVector) {
 		
 		int bestAttribute = Integer.MIN_VALUE;
-		double bestInformationGainSoFar = Double.MIN_VALUE;
+		double bestInformationGainSoFar = Double.MIN_VALUE, informationGain = 0.0;
 		for (Integer attribute : attributesVector) {
-		
-			if (getInformationGain(examples, attribute.intValue()) > bestInformationGainSoFar) {
+			
+			informationGain = getInformationGain(examples, attribute.intValue());
+			if (informationGain > bestInformationGainSoFar) {
+				bestInformationGainSoFar = informationGain;
 				bestAttribute = attribute.intValue();
 			}
 
@@ -447,6 +461,19 @@ public class DecisionTreeId3BinaryClassifier implements Classifier {
 			} else {
 				return this.secondLabel;
 			}
+		}
+		
+	}
+	
+	/**
+	 * @param number
+	 * @return log base 2. Log 0 will be defined as zero.
+	 */
+	private double logBase2(double number) {
+		if (number == 0.0) {
+			return 0.0;
+		} else {
+			return Math.log(number) / Math.log(2);
 		}
 		
 	}

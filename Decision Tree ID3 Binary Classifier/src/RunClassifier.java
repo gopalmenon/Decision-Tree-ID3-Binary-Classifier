@@ -7,17 +7,18 @@ public class RunClassifier {
 	 * @param args
 	 */
 	
-	//public static final String TRAINING_DATA_A_FILE = "datasets/SettingA/test.data";
-	public static final String TRAINING_DATA_FILE = "datasets/PokemonGo/Train.data";
-	public static final String TESTING_DATA_FILE = "datasets/PokemonGo/test.data";
+	public static final String TRAINING_DATA_A_FILE = "datasets/SettingA/training.data";
+	public static final String TESTING_DATA_A_FILE = "datasets/SettingA/test.data";
+	public static final String POKEMON_TRAINING_DATA_FILE = "datasets/PokemonGo/Train.data";
+	public static final String POKEMON_TESTING_DATA_FILE = "datasets/PokemonGo/Test.data";
 	
 	public static void main(String[] args) {
 
 		try {
 
 			//Get training and testing data
-			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_FILE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_FILE);
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(POKEMON_TRAINING_DATA_FILE);
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(POKEMON_TESTING_DATA_FILE);
 			
 			//Train the classifier
 			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier();
