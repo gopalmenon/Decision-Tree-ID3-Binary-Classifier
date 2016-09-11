@@ -24,11 +24,11 @@ public class RunClassifier {
 		try {
 
 			//Get training and testing data
-			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(POKEMON_TRAINING_DATA_FILE);
-			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(POKEMON_TESTING_DATA_FILE);
+			List<List<Character>> trainingData = CsvFileReader.getCsvFileContents(TRAINING_DATA_A_FILE);
+			List<List<Character>> testingData = CsvFileReader.getCsvFileContents(TESTING_DATA_A_FILE);
 			
 			//Train the classifier
-			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(POKEMON_GO_FEATURES_PROPERTIES_FILE);
+			DecisionTreeId3BinaryClassifier classifier = new DecisionTreeId3BinaryClassifier(MUSHROOM_FEATURES_PROPERTIES_FILE);
 			classifier.train(trainingData);
 			
 			//Run the prediction
@@ -36,7 +36,7 @@ public class RunClassifier {
 			
 			//Get positive and negative labels from properties file
 			Properties featureProperties = new Properties();
-			InputStream inputStream = new FileInputStream(POKEMON_GO_FEATURES_PROPERTIES_FILE);
+			InputStream inputStream = new FileInputStream(MUSHROOM_FEATURES_PROPERTIES_FILE);
 			featureProperties.load(inputStream);
 
 			
