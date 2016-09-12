@@ -1,0 +1,196 @@
+\section{Decision trees (35 points)}
+\label{sec:q1}
+
+\begin{enumerate}
+\item ~[6 points] To warm up, represent the following Boolean
+  functions as decision trees. (It is unnecessary to make the decision
+  tree as small as possible; you can choose any root as you like. Use
+  1 for True and 0 for False. Also, note that an easy way to represent
+  decision trees is as a series of {\tt if-then-else} statements.)
+
+\begin{enumerate}
+\item $ (x_1 \lor x_2 ) \land x_3 $
+
+\begin{forest}
+  label L/.style={
+    edge label={node[midway,left,font=\scriptsize]{#1}}
+  },
+  label R/.style={
+    edge label={node[midway,right,font=\scriptsize]{#1}}
+  },
+  for tree={
+    child anchor=north,
+    for descendants={
+      {edge=->}
+    }
+  },
+  [$x_3$, decision, draw
+    [$x_1$, decision, draw, label L=1,
+      [1, rectangle, draw, label L=1, tier=bottom]
+      [$x_2$, decision, draw, label L=0,
+        [1, rectangle, draw, label L=1, tier=bottom]
+        [0, rectangle, draw, label L=0, tier=bottom]
+     ]
+    ]
+    [0, rectangle, draw, label R=0, tier=bottom]
+  ]
+\end{forest}
+                                      
+\item $(x_1 \land x_2)$  xor  $(\neg x_1 \lor x_3) $
+
+\begin{forest}
+  label L/.style={
+    edge label={node[midway,left,font=\scriptsize]{#1}}
+  },
+  label R/.style={
+    edge label={node[midway,right,font=\scriptsize]{#1}}
+  },
+  for tree={
+    child anchor=north,
+    for descendants={
+      {edge=->}
+    }
+  },
+  [$x_1$, decision, draw
+    [1, rectangle, draw, label L=0, tier=bottom]
+    [$x_3$, decision, draw, label L=1,
+      [$x_2$, decision, draw, label L=0,
+          [0, rectangle, draw, label L=0, tier=bottom]
+          [1, rectangle, draw, label R=1, tier=bottom]
+      ]
+      [$x_2$, decision, draw, label R=1,
+          [1, rectangle, draw, label L=0, tier=bottom]
+          [0, rectangle, draw, label R=1, tier=bottom]
+      ]
+    ]
+  ]
+\end{forest}
+
+\item The 2-of-3 function defined as follows: at least 2 of $\{x_1,
+  x_2, x_3\}$ should be true for the output to be true.
+  
+  \begin{forest}
+  label L/.style={
+    edge label={node[midway,left,font=\scriptsize]{#1}}
+  },
+  label R/.style={
+    edge label={node[midway,right,font=\scriptsize]{#1}}
+  },
+  for tree={
+    child anchor=north,
+    for descendants={
+      {edge=->}
+    }
+  },
+  [$x_1$, decision, draw
+    [$x_2$, decision, draw, label L=1,
+      [$x_3$, decision, draw, label L=1,
+          [1, rectangle, draw, label L=1, tier=bottom]
+          [1, rectangle, draw, label R=0, tier=bottom]
+      ]
+      [$x_3$, decision, draw, label R=0,
+          [1, rectangle, draw, label L=1, tier=bottom]
+          [0, rectangle, draw, label R=0, tier=bottom]
+      ]
+    ]
+    [$x_2$, decision, draw, label R=0,
+      [$x_3$, decision, draw, label L=1,
+          [1, rectangle, draw, label L=1, tier=bottom]
+          [0, rectangle, draw, label R=0, tier=bottom]
+      ]
+      [$x_3$, decision, draw, label R=0,
+          [0, rectangle, draw, label L=1, tier=bottom]
+          [0, rectangle, draw, label R=0, tier=bottom]
+      ]
+    ]
+  ]
+\end{forest}
+  
+  
+\end{enumerate}
+
+\item When playing Pok\'emon Go, there is some chance that a Pok\'emon will be caught or it will escape. In the following question, build a decision tree to determine whether a Pok\'emon can be caught.\\ There are four features:
+\begin{enumerate}
+\item \textbf{Berry} \textit{(Yes or No)} means whether a Razz Berry was used.
+\item \textbf{Ball} \textit{(Pok\'e, Great, or Ultra)} describes which kind of ball has been thrown.
+\item \textbf{Color} \textit{(Green, Yellow, or Red)} stands for the difficulty level of catching this Pok\'emon.
+\item \textbf{Type} \textit{(Normal, Water, Flying, or Psychic)} depicts the type of the Pok\'emon.  
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| c c c c | c |}
+\hline
+Berry& Ball & Color & Type & Caught\\
+\hline
+Yes & Pok\'e & Green & Normal & Yes \\
+No & Pok\'e & Yellow & Normal & No \\
+No & Great & Yellow & Normal & No \\
+Yes & Ultra & Yellow & Normal & Yes \\
+No & Pok\'e & Red & Normal & No \\
+Yes & Great & Red & Normal & Yes \\
+Yes & Great & Green & Water & Yes \\
+No & Great & Yellow & Water & No \\
+Yes & Pok\'e & Red & Water & No \\
+No & Ultra & Red & Water & Yes \\
+No & Pok\'e & Red & Flying  & No \\
+Yes & Great & Yellow & Flying  & Yes \\
+No & Ultra & Yellow & Flying & Yes \\
+Yes & Great & Red & Flying  & Yes \\
+No & Pok\'e & Green & Psychic & No \\
+No & Great & Yellow & Psychic & No \\
+\hline
+\end{tabular}
+\caption{Training set for Pok\'emon Go}
+\end{table}
+\begin{enumerate}
+\item  ~[2 points] How many possible functions are there to map these four features to a Boolean decision? 
+\item  ~[2 points]  What is the entropy of the labels in this data? (When calculating entropy, The base of the logarithm should be 2.)
+\item  ~[8 points] Calculate information gain for four features respectively. Keep 3 significant digits.  
+\item  ~[3 points] According to your results, using ID3 algorithm which attribute should be root for the decision tree?
+\item   ~[4 points] Construct a decision with the root you selected in the previous question. You do not have to use the ID3 algorithm here, you can show any tree with the chosen root.
+\item   ~[2 points] Using your decision tree to predict label in the test set in the table below, what is your label for the each example? What is your accuracy?
+
+\item   ~[1 points]  Do you think it is a good idea to use decision tree in this Pok\'emon Go problem?
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| c c c c | c |}
+\hline
+Berry& Ball & Color & Type & Caught\\
+\hline
+Yes & Great & Yellow & Psychic & Yes \\
+Yes & Pok\'e & Green & Flying & No \\
+No & Ultra & Red & Water & No \\
+\hline
+\end{tabular}
+\caption{Test set for Pok\'emon Go}
+\end{table}
+
+
+\end{enumerate}
+\item Recall that in the ID3 algorithm, we want to identify the best
+  attribute that splits the examples that are relatively pure in one
+  label. Apart from entropy, which you used in the previous question,
+  there are other methods to measure impurity. One such impurity
+  measure is the Gini measure, that is used in the CART family of
+  algorithms. If there are $k$ possible outcomes
+  $1,\cdots, i, \cdots, k$, each with a probability
+  $p_1, \cdots, p_i, \cdots, p_k$ of occurring, the Gini measure is
+  defined as:
+\begin{equation*}
+Gini(p_1, \cdots, p_k) =   1 - \sum_{i=1}^k p_i^2
+\end{equation*}
+The Gini measure can be used to replace entropy in the definition of information gain to pick the best attribute.
+\begin{enumerate}
+\item ~[4 points] Using the Gini measure, calculate the information gain for the four features respectively. Use 3 significant digits. 
+\item ~[3 points] According to your results in the last question,
+  which attribute should be the root for the decision tree? Do these
+  two measures (entropy and Gini) lead to the same tree?
+\end{enumerate}
+\end{enumerate}
+
+
+
+
+

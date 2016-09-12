@@ -1,0 +1,49 @@
+\section{Linear Classifiers (15 points)}
+\label{sec:q1}
+
+In the questions in this section, we have four features $x_1$, $x_2$,
+$x_3$ and $x_4$ and the label is represented by $o$.
+
+\begin{enumerate}
+\item ~[3 points] Write a linear classifier that correctly classifies the given dataset. You don't need to run any learning algorithm here. Try to find the weights and the bias of the classifier using the definition of linear separators.
+  \begin{center}
+    \begin{tabular}{cccc|c}
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ & $o$ \\ \hline
+      0 & 0 & 0 & 1 & 1 \\
+      0 & 0 & 1 & 1 & 1 \\
+      0 & 0 & 0 & 0 & -1 \\
+    \end{tabular}
+  \end{center}
+
+\item ~[5 points] Suppose the dataset below is an extension of the above dataset. Check if your classifier from the previous question correctly classifies the dataset. Report its accuracy.
+  \begin{center}
+    \begin{tabular}{cccc|c}
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ & $o$ \\ \hline
+      1 & 0 & 1 & 1 & 1 \\
+      0 & 1 & 0 & 1 & 1 \\
+      1 & 0 & 1 & 0 & 1 \\
+      1 & 1 & 0 & 0 & 1 \\
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 0 & 1 \\
+      0 & 0 & 1 & 0 & -1 \\
+    \end{tabular}
+  \end{center}
+
+\item ~[7 points] Given the remaining missing data points of the above dataset in the table below, find a linear classifier that correctly classifies the whole dataset (all three tables together). 
+  \begin{center}
+    \begin{tabular}{cccc|c}
+      $x_1$ & $x_2$ & $x_3$ & $x_4$ & $o$ \\ \hline
+      0 & 1 & 0 & 0 & -1\\
+      0 & 1 & 1 & 0 & -1 \\
+      0 & 1 & 1 & 1 & 1 \\
+      1 & 0 & 0 & 0 & 1 \\
+      1 & 0 & 0 & 1 & 1 \\
+      1 & 1 & 0 & 1 & 1 \\
+    \end{tabular}
+  \end{center}
+\end{enumerate}
+
+
+
+
+
