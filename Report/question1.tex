@@ -183,9 +183,59 @@ Gain(S , Type) &= Entropy(S) - \frac{6}{16} Entropy(S_{Normal}) - \frac{4}{16} E
 The root should be feature $Ball$, since it has the largest entropy gain.
 
 \item   ~[4 points] Construct a decision with the root you selected in the previous question. You do not have to use the ID3 algorithm here, you can show any tree with the chosen root.
+
+ \begin{forest}
+  label L/.style={
+    edge label={node[midway,left,font=\scriptsize]{#1}}
+  },
+  label R/.style={
+    edge label={node[midway,right,font=\scriptsize]{#1}}
+  },
+  for tree={
+    child anchor=north,
+    for descendants={
+      {edge=->}
+    }
+  },
+  [$Ball$, decision, draw
+    [$Berry$, decision, draw, label L=Pok\'e,
+      [$Color$, decision, draw, label L=Yes,
+          [Yes, rectangle, draw, label L=Green, tier=bottom]
+          [Yes, rectangle, draw, label L=Yellow, tier=bottom]
+          [No, rectangle, draw, label R=Red, tier=bottom]
+      ]
+      [No, rectangle, draw, label L=No, tier=bottom]
+    ]
+    [Yes, rectangle, draw, label R=Ultra, tier=bottom]
+    [$Berry$, decision, draw, label L=Great,
+        [Yes, rectangle, draw, label L=Yes, tier=bottom]
+        [No, rectangle, draw, label R=No, tier=bottom]
+    ]
+    ]
+  ]
+\end{forest}
+
+
 \item   ~[2 points] Using your decision tree to predict label in the test set in the table below, what is your label for the each example? What is your accuracy?
 
+Only one out of three was classified correctly. So accuracy is low.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| c c c c | c |c|}
+\hline
+Berry& Ball & Color & Type & Caught & Prediction\\
+\hline
+Yes & Great & Yellow & Psychic & Yes & Yes\\
+Yes & Pok\'e & Green & Flying & No & Yes\\
+No & Ultra & Red & Water & No & Yes\\
+\hline
+\end{tabular}
+\end{table}
+
 \item   ~[1 points]  Do you think it is a good idea to use decision tree in this Pok\'emon Go problem?
+
+It is not a good idea to use a decision tree for this particular Pok\'emon Go problem. The training data looks to be not enough for a learning algorithm and the test data seems to be adversarial. A decision tree may perform better with a larger test data set.
 
 \begin{table}[H]
 \centering
