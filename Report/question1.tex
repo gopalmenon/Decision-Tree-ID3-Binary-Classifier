@@ -2,11 +2,7 @@
 \label{sec:q1}
 
 \begin{enumerate}
-\item ~[6 points] To warm up, represent the following Boolean
-  functions as decision trees. (It is unnecessary to make the decision
-  tree as small as possible; you can choose any root as you like. Use
-  1 for True and 0 for False. Also, note that an easy way to represent
-  decision trees is as a series of {\tt if-then-else} statements.)
+\item 
 
 \begin{enumerate}
 \item $ (x_1 \lor x_2 ) \land x_3 $
@@ -109,45 +105,83 @@
   
 \end{enumerate}
 
-\item When playing Pok\'emon Go, there is some chance that a Pok\'emon will be caught or it will escape. In the following question, build a decision tree to determine whether a Pok\'emon can be caught.\\ There are four features:
-\begin{enumerate}
-\item \textbf{Berry} \textit{(Yes or No)} means whether a Razz Berry was used.
-\item \textbf{Ball} \textit{(Pok\'e, Great, or Ultra)} describes which kind of ball has been thrown.
-\item \textbf{Color} \textit{(Green, Yellow, or Red)} stands for the difficulty level of catching this Pok\'emon.
-\item \textbf{Type} \textit{(Normal, Water, Flying, or Psychic)} depicts the type of the Pok\'emon.  
-\end{enumerate}
+\item 
 
-\begin{table}[H]
-\centering
-\begin{tabular}{| c c c c | c |}
-\hline
-Berry& Ball & Color & Type & Caught\\
-\hline
-Yes & Pok\'e & Green & Normal & Yes \\
-No & Pok\'e & Yellow & Normal & No \\
-No & Great & Yellow & Normal & No \\
-Yes & Ultra & Yellow & Normal & Yes \\
-No & Pok\'e & Red & Normal & No \\
-Yes & Great & Red & Normal & Yes \\
-Yes & Great & Green & Water & Yes \\
-No & Great & Yellow & Water & No \\
-Yes & Pok\'e & Red & Water & No \\
-No & Ultra & Red & Water & Yes \\
-No & Pok\'e & Red & Flying  & No \\
-Yes & Great & Yellow & Flying  & Yes \\
-No & Ultra & Yellow & Flying & Yes \\
-Yes & Great & Red & Flying  & Yes \\
-No & Pok\'e & Green & Psychic & No \\
-No & Great & Yellow & Psychic & No \\
-\hline
-\end{tabular}
-\caption{Training set for Pok\'emon Go}
-\end{table}
 \begin{enumerate}
 \item  ~[2 points] How many possible functions are there to map these four features to a Boolean decision? 
+
+The number of possible rows in a truth table with all possible values of the four features will be\\
+
+Number of types of Berries $\times$ Number of types of Balls $\times$ Number of colors $\times$ Number of Pok\'emon types
+
+$= 2 \times 3 \times 3 \times 4$
+$=72$\\
+
+Each row in this truth table can have a value of $Yes$ or $No$ as a label for whether the Pok\'emon can be caught or not. The $Yes$ and $No$ can be represented as bits $1$ and $0$. Each possible function will map to one combination of these labels and will be of the form of a 72-bit binary number. So the total possible number of functions will be $2^{72}$, which is the count of all the possible 72-bit binary numbers.
+
 \item  ~[2 points]  What is the entropy of the labels in this data? (When calculating entropy, The base of the logarithm should be 2.)
+
+The entropy of a collection $S$ where the target label can take on $c$ different values is defined as \cite{Mitchell}
+\begin{align*} 
+Entropy(S) = \sum_{i=1}^c -p_i log_2 p_i
+\end{align*}
+
+where $p_i$ is the proportion of $S$ belonging to label $i$.
+
+\begin{align*} 
+Entropy(Pok \acute emon Data) &= -\frac{8}{16} log_2 \frac{8}{16} -\frac{8}{16} log_2 \frac{8}{16} \\
+&= -\frac{1}{2} log_2 \frac{1}{2} -\frac{1}{2} log_2 \frac{1}{2}\\
+&= -log_2 \frac{1}{2} \\
+&= 1
+\end{align*}
+
 \item  ~[8 points] Calculate information gain for four features respectively. Keep 3 significant digits.  
+
+\begin{align*} 
+Values(Berry) &= Yes , No\\
+S &= \left [ 8+, 8- \right ] \\
+S_{Yes} &= \left [ 6+, 1- \right ] \\
+S_{No} &= \left [ 2+, 7- \right ] \\
+Gain(S , Berry) &= Entropy(S) - \frac{7}{16} Entropy(S_{Yes}) - \frac{9}{16} Entropy(S_{No})\\
+&= 1 - \frac{7}{16} \times 0.5917 - \frac{9}{16} \times 0.7642\\
+&= 0.311
+\end{align*}
+\begin{align*} 
+Values(Ball) &= Pok \acute e , Great , Ultra\\
+S_{Pok \acute e} &= \left [ 1+, 5- \right ] \\
+S_{Great} &= \left [ 4+, 3- \right ] \\
+S_{Ultra} &= \left [ 3+, 0- \right ] \\
+Gain(S , Ball) &= Entropy(S) - \frac{6}{16} Entropy(S_{Pok \acute e}) - \frac{7}{16} Entropy(S_{Great}) - \frac{3}{16} Entropy(S_{Ultra})\\
+&= 1 - \frac{6}{16} \times 0.65 - \frac{7}{16} \times 0.9852 -\frac{3}{16} \times 0\\
+&= 0.3252
+\end{align*}
+\begin{align*} 
+Values(Color) &= Green , Yellow , Red\\
+S_{Green} &= \left [ 2+, 1- \right ] \\
+S_{Yellow} &= \left [ 3+, 4- \right ] \\
+S_{Red} &= \left [ 3+, 3- \right ] \\
+Gain(S , Color) &= Entropy(S) - \frac{3}{16} Entropy(S_{Green}) - \frac{7}{16} Entropy(S_{Yellow}) \\ 
+&- \frac{6}{16} Entropy(S_{Red})\\
+&= 1 - \frac{3}{16} \times 0.9183 - \frac{7}{16} \times 0.9852 -\frac{6}{16} \times 1\\
+&= 0.0218
+\end{align*}
+\begin{align*} 
+Values(Type) &= Normal , Water , Flying, Psychic\\
+S_{Normal} &= \left [ 3+, 3- \right ] \\
+S_{Water} &= \left [ 2+, 2- \right ] \\
+S_{Flying} &= \left [ 3+, 1- \right ] \\
+S_{Psychic} &= \left [ 0+, 2- \right ] \\
+\end{align*}
+\begin{align*} 
+Gain(S , Type) &= Entropy(S) - \frac{6}{16} Entropy(S_{Normal}) - \frac{4}{16} Entropy(S_{Water}) \\ 
+&- \frac{4}{16} Entropy(S_{Flying}) - \frac{2}{16} Entropy(S_{Psychic})\\
+&= 1 - \frac{6}{16} \times 1 - \frac{4}{16} \times 1 -\frac{4}{16} \times 0.8113 - \frac{2}{16} \times 0\\
+&= 0.172
+\end{align*}
 \item  ~[3 points] According to your results, using ID3 algorithm which attribute should be root for the decision tree?
+
+The root should be feature $Ball$, since it has the largest entropy gain.
+
 \item   ~[4 points] Construct a decision with the root you selected in the previous question. You do not have to use the ID3 algorithm here, you can show any tree with the chosen root.
 \item   ~[2 points] Using your decision tree to predict label in the test set in the table below, what is your label for the each example? What is your accuracy?
 
