@@ -15,6 +15,18 @@ $x_3$ and $x_4$ and the label is represented by $o$.
     \end{tabular}
   \end{center}
 
+I obtained the weights and bias by trial and error. 
+  \begin{equation*}
+     w=\begin{bmatrix}
+         0\\
+         0 \\
+         1\\
+         1
+        \end{bmatrix}
+  \end{equation*}
+  $$
+  b=-1
+  $$
 \item ~[5 points] Suppose the dataset below is an extension of the above dataset. Check if your classifier from the previous question correctly classifies the dataset. Report its accuracy.
   \begin{center}
     \begin{tabular}{cccc|c}
@@ -28,6 +40,22 @@ $x_3$ and $x_4$ and the label is represented by $o$.
       0 & 0 & 1 & 0 & -1 \\
     \end{tabular}
   \end{center}
+
+Using the above classifier, the output is 
+  \begin{center}
+    \begin{tabular}{c|c}
+      $Classifier \; Output$ & $Expected \; Output$ \\ \hline
+      1 & 1 \\
+      1 &  1 \\
+       1 & 1 \\
+       -1 & 1 \\
+       1 & 1 \\
+       1 &1 \\
+      1 &-1 \\
+    \end{tabular}
+  \end{center}
+  
+  The classifier correctly classified 5 out of 7 outputs, giving an accuracy of 71.43\%.
 
 \item ~[7 points] Given the remaining missing data points of the above dataset in the table below, find a linear classifier that correctly classifies the whole dataset (all three tables together). 
   \begin{center}
@@ -43,7 +71,18 @@ $x_3$ and $x_4$ and the label is represented by $o$.
   \end{center}
 \end{enumerate}
 
-
+Upon writing down the entire dataset, it becomes evident that the output depends only on the value of $x_1$. When $x_1 = 0$, the output is $-1$ and when $x_1=1$, the output is 1. When that is the case, the weight and bias will be
+  \begin{equation*}
+     w=\begin{bmatrix}
+         1\\
+         0 \\
+         0\\
+         0
+        \end{bmatrix}
+  \end{equation*}
+  $$
+  b=-1
+  $$
 
 
 
