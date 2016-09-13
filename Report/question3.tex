@@ -1,81 +1,40 @@
 \section{Experiments}
 \label{sec:q1}
 
-In this question you will be implementing a decision tree learner. You will experiment with the decision tree hyperparameters using cross-validation.
-
-This problem uses the Mushroom Data set from the UCI machine learning repository. Each data point has 22 features indicating different characteristics of a mushroom. You can find definitions of each feature in the \texttt{mushroom.names} file. Your goal is to use the ID3 algorithm on the provided training datasets to train a predictor and see how well it does on the test data. You may use Java, Python, Matlab, C/C++ for this assignment. If you want to use a different language, you must contact the instructor first. Any other language you may want to use \textbf{MUST} run on the CADE machines.
-
-
-\subsection*{Cross-Validation}
-
-The depth of the tree is a hyper-parameter to the decision tree
-algorithm that helps reduce overfitting. You will see later in the
-semester that many machine learning algorithm (SVM,
-logistic-regression etc) have some hyper-parameters as their input.
-One way to determine a proper value for the hyper-parameter is to use
-a technique called {\em cross-validation}.
-
-As usual we have a training set and a test set. Our goal is to
-discover good hyperparameters using the training set. To do so, you
-can put aside some of the training data aside, and when training is
-finished, you can test the resulting classifier on the held out data.
-This allows you to get an idea of how well the particular choice of
-hyper-parameters does. However, since you did not train on your whole
-dataset you may have introduced a statistical bias in the classifier.
-To correct for this, you will need to train many classifiers with
-different subsets of the training data removed and average out the
-accuracy across these trials.
-
-For problems with small data sets, a popular method is the
-leave-one-out approach. For each example, a classifier is trained on
-the rest of the data and the chosen example is then evaluated. The
-performance of the classifier is the average accuracy on all the
-examples. The downside to this method is for a data set with $n$
-examples you must train $n$ different classifiers. Of course, this is
-not practical for the data set you will use in this problem, so you
-will hold out subsets of the data many times instead.
-
-Specifically, for this problem, you should implement $k$-fold cross
-validation. The general approach for $k$-fold cross validation is the
-following: Suppose you want to evaluate how good a particular
-hyper-parameter is. You split the training data into $k$ parts. Now,
-you will train your model on $k-1$ parts with the chosen
-hyper-parameter and evaluate the trained model on the remaining part.
-You should repeat this $k$ times, choosing a different part for
-evaluation each time. This will give you $k$ values of accuracy. Their
-{\em average cross-validation accuracy} gives you an idea of how good
-this choice of the hyper-parameter is. To find the best value of the
-hyper-parameter, you will need to repeat this procedure for different
-choices of the hyper-parameter. Once you find the best value of the
-hyper-parameter, use the value to retrain you classifier using the
-entire training set.
-
 \subsection*{Setting A [25 points]}
-
 
 \begin{enumerate}
 \item ~[10 points] \textbf{Implementation}
 
-  For this problem, you will be using the data found in the \texttt{SettingA} folder. This folder contains two files, \texttt{SettingA/training.data} and \texttt{SettingA/test.data}. In this setting you will be training your algorithm on the training file (\texttt{SettingA/training.data}). Remember that you should not look at or use your testing file until your algorithm is complete. 
-
   \begin{enumerate}
-  \item ~[4 points] Implement the decision tree data structure and the ID3 algorithm for your decision tree. (Remember that the decision tree need not be a binary tree!). For debugging your implementation, you can use the previous toy examples like the Pok\'emon data from Table 1. Discuss what approaches or choices you had to make during this implementation. 
+  \item ~[4 points] I used the Pok\'emon training and test data to verify that the decision tree had been coded properly. The decision tree was coded based on the algorithm in Tom Mitchell\'s book \cite{Mitchell}. A random number generator was used when I needed to break a tie in the selection of the most common value of an attribute. To check the accuracy of the classifier I used the statistical metrics for Precsion, Recall, Accuracy and F1 Score. The Java Collection library classes were used as they made programming a little easier. The Tree was implemented using a class hierarchy of generic node as the parent class of a leaf node and an internal node. The child nodes for an internal node were represented using a collection of nodes.
     
-  \item ~[2 points]  Report the error of your decision tree on the \texttt{SettingA/training.data} file. 
+  \item ~[2 points]  There was no error when testing on the training data.
     
-  \item ~[5 points] Report the error of your decision tree on the \texttt{SettingA/test.data} file. 
+  \item ~[5 points] There was no error when testing on the testing data.
     
-  \item ~[1 points] Report the maximum depth of your decision tree. 
+  \item ~[1 points] The maximum tree depth was 3.
   \end{enumerate}
 
 \item ~[15 points] \textbf{Limiting Depth}
 
-  In this section you will be using 6-fold cross-validation in order to limit the depth of your decision tree, effectively pruning the tree to avoid overfitting. We have split the data into 6 parts for you: you will be using the 6 cross-validation files for this section, titled \texttt{SettingA/CVSplits/training\_0X.data} where \texttt{X} is a number between 0 and 5 (inclusive).
-
   \begin{enumerate}
-  \item ~[10 points] Run 6-fold cross-validation using the specified files. Experiment with depths in the set $\{1,2,3,4,5,10,15,20\}$, reporting the average cross-validation accuracy and standard deviation for each depth.
+  \item ~[10 points] 
+    \begin{center}
+    \begin{tabular}{c|c|c}
+      $Depth$ & $Average \; Accuracy$ & $Standard Deviation$\\ \hline
+      1 & 0.983 & 0.037\\
+      2 &  0.997 & 0.007\\
+       3 & 1.0 & 0.0\\
+       4 & 1.0 & 0.0\\
+       5 & 1.0 & 0.0\\
+       10 &1.0 & 0.0\\
+      15 & 1.0 & 0.0\\
+      20 & 1.0 & 0.0
+    \end{tabular}
+  \end{center}
     
-  \item ~[5 points]  Using the depth with the greatest average cross-validation accuracy from your experiments: train your decision tree on the \texttt{SettingA/training.data} file. Report the accuracy of your decision tree on the \texttt{SettingA/test.data} file. 	
+  \item ~[5 points]  A maximum depth of 3 was specified for the decision tree since it was the smallest tree that resulted in an average accuracy of 1.0 with 6-fold cross validation. With training and test data and a depth of 3, the accuracy obtained was 1.0.
   \end{enumerate}
 
 \end{enumerate}
