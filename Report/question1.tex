@@ -267,10 +267,47 @@ Gini(p_1, \cdots, p_k) =   1 - \sum_{i=1}^k p_i^2
 \end{equation*}
 The Gini measure can be used to replace entropy in the definition of information gain to pick the best attribute.
 \begin{enumerate}
-\item ~[4 points] Using the Gini measure, calculate the information gain for the four features respectively. Use 3 significant digits. 
+\item ~[4 points] Using the Gini measure, calculate the information gain for the four features respectively. Use 3 significant digits. \\
+\begin{align*} 
+Gini(Pok\acute emon Data) &= 1 - \left ( \frac{8}{16} \right ) ^ 2 - \left ( \frac{8}{16} \right ) ^ 2\\
+&= 1 - 0.25 - 0.25\\
+&= 0.5\\
+Gain(S, Berry) &= Gini(S) -\frac{7}{16} Gini(S_{Yes}) -\frac{9}{16} Gini(S_{No}) \\
+&= 0.5 - \frac{7}{16} \left( 1 - \left( \frac{6}{7} \right) ^2 - \left( \frac{1}{7} \right) ^2 \right) - \frac{9}{16} \left( 1 - \left( \frac{2}{9} \right) ^2 - \left( \frac{7}{9} \right) ^2 \right) \\
+&= 0.5 - \frac{7}{16} \times \frac{12}{49}  - \frac{9}{16} \times \frac{28}{81} \\
+&= 0.5 - 0.1071 - 0.1944\\
+&=0.198
+\end{align*}
+\begin{align*} 
+Gain(S, Ball) &= Gini(S) -\frac{6}{16} Gini(S_{Pok\acute e}) -\frac{7}{16} Gini(S_{Great})  -\frac{3}{16} Gini(S_{Ultra})\\
+&= 0.5 - \frac{6}{16} \left( 1 - \left( \frac{1}{6} \right) ^2 - \left( \frac{5}{6} \right) ^2 \right) - \frac{7}{16} \left( 1 - \left( \frac{4}{7} \right) ^2 - \left( \frac{3}{7} \right) ^2 \right)\\
+&- \frac{3}{16} \left( 1 - \left( \frac{3}{3} \right) ^2 - \left( \frac{0}{3} \right) ^2 \right)\\
+&= 0.5 - \frac{6}{16} \times \frac{10}{36}  - \frac{7}{16} \times \frac{24}{49}  - \frac{3}{16} \times 0 \\
+&= 0.5 - 0.1042 - 0.2143\\
+&=0.181
+\end{align*}
+\begin{align*} 
+Gain(S, Color) &= Gini(S) -\frac{3}{16} Gini(S_{Green}) -\frac{7}{16} Gini(S_{Yellow})  -\frac{6}{16} Gini(S_{Red})\\
+&= 0.5 - \frac{3}{16} \left( 1 - \left( \frac{2}{3} \right) ^2 - \left( \frac{1}{3} \right) ^2 \right) - \frac{7}{16} \left( 1 - \left( \frac{3}{7} \right) ^2 - \left( \frac{4}{7} \right) ^2 \right)\\
+&- \frac{6}{16} \left( 1 - \left( \frac{3}{6} \right) ^2 - \left( \frac{3}{6} \right) ^2 \right)\\
+&= 0.5 - \frac{3}{16} \times \frac{4}{9}  - \frac{7}{16} \times \frac{24}{49}  - \frac{6}{16} \times \frac{1}{2} \\
+&= 0.5 - 0.0833 - 0.2143 - 0.1875\\
+&=0.015
+\end{align*}
+\begin{align*} 
+Gain(S, Type) &= Gini(S) -\frac{6}{16} Gini(S_{Normal}) -\frac{4}{16} Gini(S_{Water})  -\frac{4}{16} Gini(S_{Flying})\\
+&- \frac{2}{16} Gini(S_{Psychic})\\
+&= 0.5 - \frac{6}{16} \left( 1 - \left( \frac{3}{6} \right) ^2 - \left( \frac{3}{6} \right) ^2 \right) - \frac{4}{16} \left( 1 - \left( \frac{2}{4} \right) ^2 - \left( \frac{2}{4} \right) ^2 \right)\\
+&- \frac{4}{16} \left( 1 - \left( \frac{3}{4} \right) ^2 - \left( \frac{1}{4} \right) ^2 \right) - \frac{2}{16} \left( 1 - \left( \frac{0}{2} \right) ^2 - \left( \frac{2}{2} \right) ^2 \right)\\
+&= 0.5 - \frac{6}{16} \times \frac{1}{2}  - \frac{4}{16} \times \frac{1}{2}  - \frac{4}{16} \times \frac{6}{16} - \frac{2}{16} \times 0\\
+&= 0.5 - 0.1875 - 0.125 - 0.09375\\
+&=0.094
+\end{align*}
 \item ~[3 points] According to your results in the last question,
   which attribute should be the root for the decision tree? Do these
   two measures (entropy and Gini) lead to the same tree?
+  
+  As per the results in the last question based on Gini calculation, the attribute $Berry$ must be the root for the decision tree as it has the maximum gain. In the case of Entropy calculation, the attribute $Ball$ was the root of the decision tree. So the two measures will lead to different trees.
 \end{enumerate}
 \end{enumerate}
 
