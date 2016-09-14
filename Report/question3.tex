@@ -7,7 +7,7 @@
 \item ~[10 points] \textbf{Implementation}
 
   \begin{enumerate}
-  \item ~[4 points] I used the Pok\'emon training and test data to verify that the decision tree had been coded properly. The decision tree was coded based on the algorithm in Tom Mitchell\'s book \cite{Mitchell}. A random number generator was used when I needed to break a tie in the selection of the most common value of an attribute. To check the accuracy of the classifier I used the statistical metrics for Precsion, Recall, Accuracy and F1 Score. The Java Collection library classes were used as they made programming a little easier. The Tree was implemented using a class hierarchy of generic node as the parent class of a leaf node and an internal node. The child nodes for an internal node were represented using a collection of nodes.
+  \item ~[4 points] I used the Pok\'emon training and test data to verify that the decision tree had been coded properly. The decision tree was coded based on the algorithm in Tom Mitchell\'s book \cite{Mitchell}. A random number generator was used when I needed to break a tie in the selection of the most common value of an attribute. To check the accuracy of the classifier I used the statistical metrics for Precision, Recall, Accuracy and F1 Score. The Java Collection library classes were used as they made programming a little easier. The Tree was implemented using a class hierarchy of generic node as the parent class of a leaf node and an internal node. The child nodes for an internal node were represented using a collection of nodes.
     
   \item ~[2 points]  There was no error when testing on the training data.
     
@@ -22,7 +22,7 @@
   \item ~[10 points] 
     \begin{center}
     \begin{tabular}{c|c|c}
-      $Depth$ & $Average \; Accuracy$ & $Standard Deviation$\\ \hline
+      $Depth$ & $Average \; Accuracy$ & $Standard \;Deviation$\\ \hline
       1 & 0.983 & 0.037\\
       2 &  0.997 & 0.007\\
        3 & 1.0 & 0.0\\
@@ -44,51 +44,73 @@
 \begin{enumerate}
 \item ~[10 points] \textbf{Experiments}
   
-  For this problem, you will be using the data found in the \texttt{SettingB} folder. This folder contains the two files, \texttt{SettingB/training.data} and \texttt{SettingB/test.data}. In this setting you will be training your algorithm on the training file (\texttt{SettingB/training.data}). Remember that you should not look at or use your testing file until your algorithm is complete. You are not limiting the depth of your tree in this section. 
-  
   \begin{enumerate}
     
-  \item ~[2 points]  Report the error of your decision tree on the \texttt{SettingB/training.data} file. 
+  \item ~[2 points]  The error after training on setting B training data and also testing on the same data was 0. 
     
-  \item ~[2 points] Report the error of your decision tree on the \texttt{SettingB/test.data} file. 
+  \item ~[2 points] On testing on setting B test data, the error was 0.062. 
     
-  \item ~[2 points] Report the error of your decision tree on the \texttt{SettingA/training.data} file. 
+  \item ~[2 points] Error on testing using setting A training data was 0.418.
     
-  \item ~[2 points] Report the error of your decision tree on the \texttt{SettingA/test.data} file. 
+  \item ~[2 points] Error on testing using setting A test data was 0.002.
     
-  \item ~[1 points] Report the maximum depth of your decision tree. 
+  \item ~[1 points] Maximum tree depth was 9.
   \end{enumerate}
   
 \item ~[15 points] \textbf{Limiting Depth}
   
-  In this section you will be using 6-fold cross-validation in order to limit the depth of your decision tree, effectively pruning the tree to avoid overfitting. You will be using the 6 cross-validation files for this section, titled \texttt{SettingB/CVSplits/training\_0X.data} where \texttt{X} is a number between 0 and 5 (inclusive). 
-  
   \begin{enumerate}
-  \item ~[10 points] Run 6-fold cross-validation using the specified files. Experiment with depths in the set $\{1,2,3,4,5,10,15,20\}$, reporting the cross-validation accuracy and standard deviation for each depth. Explicity specify which depth should be chosen as the best, and explain why. 
+  \item ~[10 points] 
+  
+      \begin{center}
+    \begin{tabular}{c|c|c}
+      $Depth$ & $Average \; Accuracy$ & $Standard \;Deviation$\\ \hline
+      1 & 0.935 & 0.029 \\
+      2 &  0.950 & 0.008\\
+       3 & 0.965 & 0.014\\
+       4 & 0.972 & 0.027\\
+       5 & 0.982 & 0.024\\
+       10 &0.988 & 0.026\\
+      15 & 0.988 & 0.026\\
+      20 & 0.988 & 0.026
+    \end{tabular}
+  \end{center}
+  
+  The depth with the greatest accuracy was seen to be 10. At higher depths, the accuracy remained the same. For this reason, the best depth chosen should be 10. The reason for not choosing larger depths which give the same accuracy is that trees with smaller depths will generalize better and thus reduce overfitting.
     
-  \item ~[5 points]  Using the depth with the greatest cross-validation accuracy from your experiments: train your decision tree on the \texttt{SettingB/training.data} file. Report the accuracy of your decision tree on the \texttt{SettingB/test.data} file. 	
+  \item ~[5 points]  The depth with the greatest accuracy was 10. An accuracy of 0.938 was obtained. 	
   \end{enumerate}
   
 \end{enumerate}
 
 \subsection*{Setting C (CS 6350 Students) [20 points]}
 
-In this setting, you are investigating what effect missing features have on a decision tree, and exploring which approach is most effective in dealing with missing features. More specifically, you will be trying:
-\begin{itemize}
-\item \textbf{Method 1:} ~Setting the missing feature as the majority feature value.
-\item \textbf{Method 2:} ~Setting the missing feature as the majority value of that label. 
-\item \textbf{Method 3:} ~Treating the missing feature as a \textit{special} feature.
-\end{itemize}
-The missing feature is represented by a \texttt{?} character. In order to determine which method is the best, you will be using 6-fold cross-validation, with the files being titled\\ \texttt{SettingC/CVSplits/training\_0X.data} where \texttt{X} is a number between 0 and 5 (inclusive). These files, along with \texttt{SettingC/training.data} and \texttt{SettingC/test.data} can be found in the \texttt{SettingC} folder. 
-
 \begin{enumerate}
 
   
-\item ~[5 points] Update your decision tree implementation to have functionality to deal with missing features. Describe your approach/any choices you had to make in this implementation. 
+\item ~[5 points] To handle methods 1 and 2, the data was pre-processed before being used for training. The '?' character was replaced by most commonly occurring value for the feature in the case of method 1. For method 2, the '?' character was replaced by the most commonly occurring feature value with the same label as the row that had the '?' character. For method 3, the training logic was updated to consider '?' as one of the possible values for the features that happened to contain this character.
   
-\item ~[10 points] Perform 6-fold cross-validation on each of the 3 methods described above. Report the accuracy for each method and the standard deviation. 
+\item ~[10 points] Based on the results, it looks like the feature that had '?' as the value in some places was not part of the tree, since all three methods returned the same result. The tree height reported was 4. That was the reason that depth settings of 4 and above had an accuracy of 1.0.
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{*7c}
+\toprule
+Depth &  \multicolumn{2}{c}{Method 1} & \multicolumn{2}{c}{Method 2} & \multicolumn{2}{c}{Method 3}\\
+\midrule
+{}   & Avg \; Acc   & Std \; Dev    & Avg \; Acc   & Std \; Dev   & Avg \; Acc   & Std \; Dev\\
+1   &  0.984 & 0.025  & 0.984 & 0.025 & 0.984 & 0.025\\
+2   & 0.994  & 0.007  & 0.994 &  0.007 & 0.994 & 0.007\\
+3   &  0.993 &  0.009 & 0.993 & 0.009 & 0.993 & 0.009\\
+4   & 1.0  & 0.0  & 1.0 & 0.0 & 1.0 & 0.0\\
+5   &  1.0 & 0.0  & 1.0 & 0.0  & 1.0 & 0.0\\
+10   & 1.0  & 0.0  & 1.0 & 0.0  & 1.0 & 0.0\\
+15   & 1.0  & 0.0  & 1.0 & 0.0 & 1.0 & 0.0\\
+20   & 1.0  & 0.0  & 1.0 & 0.0 & 1.0 & 0.0\\
+\bottomrule
+\end{tabular}
+\end{table}
   
-\item ~[5 points] Using the best method selected from your experiments, train your decision tree on \texttt{SettingC/training.data}, and report the accuracy of your tree on \texttt{SettingC/test.data}. 
+\item ~[5 points] Method 1 was chosen and the accuracy obtained was 1.0.
 \end{enumerate}
 
 

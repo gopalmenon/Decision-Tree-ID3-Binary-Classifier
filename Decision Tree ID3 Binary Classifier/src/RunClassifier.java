@@ -81,8 +81,8 @@ public class RunClassifier {
 			//Report on the tree depth
 			System.out.println("Maximum tree depth: " + classifier.getMaximumTreeDepth());
 			
-			//Run the prediction
-			List<Character> prediction = classifier.predict(testingData);
+			//Run the prediction for training data
+			List<Character> prediction = classifier.predict(trainingData);
 			
 			//Get positive and negative labels from properties file
 			Properties featureProperties = new Properties();
@@ -90,13 +90,23 @@ public class RunClassifier {
 			featureProperties.load(inputStream);
 			
 			//Find prediction accuracy
-			ClassifierMetrics classifierMetrics = new ClassifierMetrics(testingData, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			ClassifierMetrics classifierMetrics = new ClassifierMetrics(trainingData, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			System.out.println("Testing using training data");
 			System.out.println("Precision: " + classifierMetrics.getPrecision());
 			System.out.println("Recall: " + classifierMetrics.getRecall());
 			System.out.println("Accuracy: " + classifierMetrics.getAccuracy());
 			System.out.println("F1 Score: " + classifierMetrics.getF1Score());
 			
+			//Run the prediction for test data
+			prediction = classifier.predict(testingData);
 			
+			//Find prediction accuracy
+			classifierMetrics = new ClassifierMetrics(testingData, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			System.out.println("Testing using testing data");
+			System.out.println("Precision: " + classifierMetrics.getPrecision());
+			System.out.println("Recall: " + classifierMetrics.getRecall());
+			System.out.println("Accuracy: " + classifierMetrics.getAccuracy());
+			System.out.println("F1 Score: " + classifierMetrics.getF1Score());
 		} catch (IOException e) {
 			System.err.println("Error reading file.");
 			e.printStackTrace();
@@ -325,11 +335,21 @@ public class RunClassifier {
 			InputStream inputStream = new FileInputStream(MUSHROOM_FEATURES_PROPERTIES_FILE);
 			featureProperties.load(inputStream);
 			
-			//Run the prediction for Testing Data B
-			List<Character> prediction = classifier.predict(testingDataB);
+			//Run the prediction for Training Data B
+			List<Character> prediction = classifier.predict(trainingDataB);
 			
 			//Find prediction accuracy
-			ClassifierMetrics classifierMetrics = new ClassifierMetrics(testingDataB, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			ClassifierMetrics classifierMetrics = new ClassifierMetrics(trainingDataB, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			System.out.println("Precision with Training Data B: " + classifierMetrics.getPrecision());
+			System.out.println("Recall with Training Data B: " + classifierMetrics.getRecall());
+			System.out.println("Accuracy with Training Data B: " + classifierMetrics.getAccuracy());
+			System.out.println("F1 Score with Training Data B: " + classifierMetrics.getF1Score());
+			
+			//Run the prediction for Testing Data B
+			prediction = classifier.predict(testingDataB);
+			
+			//Find prediction accuracy
+			classifierMetrics = new ClassifierMetrics(testingDataB, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
 			System.out.println("Precision with Testing Data B: " + classifierMetrics.getPrecision());
 			System.out.println("Recall with Testing Data B: " + classifierMetrics.getRecall());
 			System.out.println("Accuracy with Testing Data B: " + classifierMetrics.getAccuracy());
@@ -349,7 +369,7 @@ public class RunClassifier {
 			prediction = classifier.predict(testingDataA);
 			
 			//Find prediction accuracy
-			classifierMetrics = new ClassifierMetrics(testingDataB, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
+			classifierMetrics = new ClassifierMetrics(testingDataA, prediction, featureProperties.getProperty(POSITIVE_LABEL_PROPERTY).charAt(0), featureProperties.getProperty(NEGATIVE_LABEL_PROPERTY).charAt(0));
 			System.out.println("Precision with Testing Data A: " + classifierMetrics.getPrecision());
 			System.out.println("Recall with Testing Data A: " + classifierMetrics.getRecall());
 			System.out.println("Accuracy with Testing Data A: " + classifierMetrics.getAccuracy());
